@@ -1,0 +1,188 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package Pert_060642020;
+
+/**
+ *
+ * @author User
+ */
+class NilaiMatkul{ //awal class NilaiMatkul
+    String nim; //Inisiasi tipe data String pada nim
+    String nama; //Inisiasi tipe data String pada nama
+    String nilai; //Inisiasi tipe data String pada nilai
+    
+    NilaiMatkul(){ //Konstruktor
+    }
+
+    public void setNim(String nim) { //setter nim
+        this.nim = nim; //set nim = nim
+    }
+    
+    public String getNim() { //getter nim
+        return nim; //mengembalikan nim
+    }
+
+    public void setNama(String nama) { //setter nama
+        this.nama = nama; //set nama = nama
+    }
+    
+    public String getNama() { //getter nama
+        return nama; //mengembalikan nama
+    }
+
+    public String getNilai() { //getter nilai
+        return nilai;
+    }
+
+    public void setNilai(String nilai) { //setter nilai
+        this.nilai = nilai; //mengembalikan nilai
+    }       
+}//akhir class NilaiMatkul
+
+class Elemen{ //awal class Elemen
+    NilaiMatkul kontainer; //NilaiMatkul diinisiasikan dengan kontainer(pembawa nilai)
+    Elemen next; //Elemen diinisiasikan dengan next
+    
+    Elemen(){ //konstruktor
+        kontainer = new NilaiMatkul(); //kontainer diset sama dengan NilaiMatkuk
+    }
+
+    public NilaiMatkul getKontainer() { //getter kontainer
+        return kontainer; //mengembalikan kontainer
+    }
+
+    public void setNext(Elemen next) { //setter next
+        this.next = next; //set next = next
+    }    
+    
+    public Elemen getNext() { //getter next
+        return next; //mengembalikan next
+    }        
+}//akhir class Elemen
+
+class List{ //awal class List
+    private Elemen first;
+    
+    List() {//konstruktor
+    }
+
+    public Elemen getFirst() { //getter first
+        return first; //mengembalikan first
+    }
+
+    public void setFirst(Elemen first) { //setter first
+        this.first = first; //set first = first
+    }
+    
+    void createList(){ 
+        first = null; //set first dengan isi kosong
+    }
+    
+    int countElement(){ //menghitung elemen
+        int hasil = 0; //hasil diset 0
+        Elemen bantu; 
+        
+        if(first != null)
+        {
+        //list tidak kosong
+            bantu = first; 
+            while(bantu != null){ //bantu tidak kosong
+                hasil = hasil+1; //hasil akan ditambah satu
+                bantu = bantu.getNext();
+          }
+        }
+        return hasil; //mengembalikan hasil
+    }
+    
+    void addFirst(String nim, String nama, String nilai){ //menambahkan di awal
+        Elemen baru;
+        baru = new Elemen();
+        baru.getKontainer().setNim(nim);
+        baru.getKontainer().setNama(nama);
+        baru.getKontainer().setNilai(nilai);
+        
+        if(first==null){
+            //list kosong
+            baru.setNext(null); //data selanjutnya dikosongkan
+        }
+        else{
+            //list tidak kosong
+            baru.setNext(first); //nilai baru diisi ke elemen pertama
+        }
+        first = baru; //elemen pertama diisi dengan baru
+        baru = null; //baru sebelumnya dikosongkan
+    }
+    
+    void addAfter(Elemen prev, String nim, String nama, String nilai){//menambahkan setelahnya
+        Elemen baru;
+        if(prev != null){ //jika sebelumnya tidak kosong
+            baru = new Elemen(); //elemem diisi dengan baru
+            baru.getKontainer().setNim(nim);
+            baru.getKontainer().setNama(nama);
+            baru.getKontainer().setNilai(nilai);
+            
+            if(prev.next == null){ //jika kosong
+                baru.setNext(null);//diset nol
+            }
+            else{
+                baru.setNext(prev.getNext());//nilai baru diisi nilai sebelumnya
+            }
+            prev.setNext(baru);//nilai selanjutnya diisi dengan baru
+            baru = null; //baru diset kosong
+        }
+    }
+    
+    void addLast(String nim, String nama, String nilai){ //penambahan di akhir
+        Elemen last; //elemen terakhir
+        if(first == null){ 
+            //list kosong
+            addFirst(nim, nama, nilai);//panggil addFirst
+        }
+        else{
+            //list kosong
+            //cari elemen terakhir
+            last = first;//last diisi dengan first
+            while(last.getNext() != null){//tidak kosong
+                last = last.getNext();//diisi dengan last selanjutnya
+            }
+            addAfter(last, nim, nama, nilai);//isi dengan addAfter
+        }
+    }
+    
+    void delFirst(){ //hapus di awal
+        Elemen hapus;
+        if(first != null){ //tidak kosong
+            hapus = first; // hapus yang di awal
+            if(countElement()==1){ //satu elemen saja
+                first = null; //first dikosongkan
+            }
+            else{ //lebih dari satu
+                first = first.getNext();
+            }
+            //kosongkan elemen awal sebelumnya
+            hapus.setNext(null);
+        }
+        else{ //list kosong
+            System.out.println("List kosong, tidak bisa dihapus");
+        }
+    }
+    
+    void delAfter(Elemen prev){
+        Elemen hapus;
+        if(prev != null){
+            hapus = prev.getNext();
+            if(hapus != null){ 
+                prev.setNext(null);
+            }
+            else{
+                prev.setNext(hapus.getNext());
+            }
+            //pengosongan elemen
+            hapus.setNext(null);
+          }
+        }
+  }
